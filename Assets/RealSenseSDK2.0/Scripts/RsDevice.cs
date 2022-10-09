@@ -61,7 +61,13 @@ public class RsDevice : RsFrameProvider
 
     private Thread worker;
     private readonly AutoResetEvent stopEvent = new AutoResetEvent(false);
-    private Pipeline m_pipeline;
+    protected Pipeline m_pipeline;
+
+    // RsDevice を継承した方が使い勝手がいいいため、一部だけ修正
+    // RsDevice クラスを継承したクラスからも、 m_pipeline を利用できるようにするために
+    // 毎フレームの深度センサの値を保持しているパイプラインの
+    // アクセス修飾子を private から protected に変更します。
+    //https://tks2.co.jp/2020/01/28/intel-realsense-getting-depth-data/
 
     void OnEnable()
     {
