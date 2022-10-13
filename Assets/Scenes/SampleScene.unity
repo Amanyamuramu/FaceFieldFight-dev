@@ -171,6 +171,10 @@ MonoBehaviour:
   vertical: 100
   horizontal: 100
   cube: {fileID: 2116863965300192952, guid: 030de4a25188b3946b2948ba12fe1899, type: 3}
+  objectNum: 100
+  alpha: 20
+  threshold: 5
+  distancetoCamera: 10
   rsDevice2: {fileID: 2091425277}
 --- !u!1 &705507993
 GameObject:
@@ -416,3 +420,4 @@ MonoBehaviour:
     RequestedSerialNumber: 
     PlaybackFile: 
     RecordPath: 
+  createObjectcube: {fileID: 661515268}

@@ -15,23 +15,33 @@ public class CreateObjectCube : MonoBehaviour
     public GameObject cube;
     //位置を入れる変数
     Vector3 pos;
-    private GameObject[,] copy = new GameObject[100,100];
-
+    private GameObject[,] copy; 
+    private float[,] distPosition; 
+    private float[,] pastPosition;
+    public int objectNum = 100;
+    public float alpha = 10f;
+    public float threshold = 10f;
+    public float distancetoCamera  = 20f;
 
     public RsDevice2 rsDevice2;
     void Start()
     {
+        copy = new GameObject[objectNum,objectNum];
+        distPosition = new float[objectNum,objectNum];
+        pastPosition = new float[objectNum,objectNum];
+
 
         //このスクリプトを入れたオブジェクトの位置
         pos = transform.position;
 
 
         //Z軸にverticalの数だけ並べる
-        for (int vi = 0; vi < vertical; vi++)
+        for (int vi = 0; vi < objectNum; vi++)
         {
             //X軸にhorizontalの数だけ並べる
-            for (int hi = 0; hi < horizontal; hi++)
+            for (int hi = 0; hi < objectNum; hi++)
             {
+                pastPosition[vi,hi] = 0f;
                 //PrefabのCubeを生成する
                 copy[vi,hi] = Instantiate(cube,
                     //生成したものを配置する位置
@@ -48,10 +58,19 @@ public class CreateObjectCube : MonoBehaviour
         }
     }
     void Update(){
-        for(int i = 0; i < vertical; i++){
-            for(int j = 0; j < horizontal; j++){
-                float nowPos = rsDevice2.facePosition[i,j] * 10;
-                copy[i,j].transform.position = new Vector3(copy[i,j].transform.position.x,nowPos,copy[i,j].transform.position.z);
+        for(int i = 0; i < objectNum; i++){
+            for(int j = 0; j < objectNum; j++){
+                float nowPos = rsDevice2.facePosition[i,j] * alpha;
+                float distance = Mathf.Abs(pastPosition[i,j] - nowPos);
+                if(distance > threshold && nowPos < distancetoCamera){
+                    copy[i,j].transform.position = new Vector3(copy[i,j].transform.position.x,nowPos,copy[i,j].transform.position.z);
+                }
+
+                else{
+                    //変化がなく、一定時間経過したらにする
+                    // copy[i,j].transform.position = new Vector3(copy[i,j].transform.position.x,0f,copy[i,j].transform.position.z);
+                }
+                pastPosition[i,j] = nowPos;
             }
         } 
     }
